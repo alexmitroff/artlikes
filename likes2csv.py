@@ -106,5 +106,5 @@ if __name__ == "__main__":
         date = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
         affix = args.search if args.search else args.user
         affix = '-'.join(affix.split(' '))
-        filename = "{}_artstation_{}.csv".format(date, affix)
+        filename = "{}_{}.csv".format(date, affix)
         write_data_to_csv(assets, filename)
