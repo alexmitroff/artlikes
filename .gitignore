@@ -1,0 +1,7 @@
+*.pyc
+*.csv
+*.swp
+*.png
+*.svg
+results/
+.idea/

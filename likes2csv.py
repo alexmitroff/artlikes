@@ -11,8 +11,10 @@ import time
 JSON_RESPONSE_NAME = 'projects.json'
 HOME_URL = 'https://www.artstation.com'
 
+
 def print_step_name(step_name='', decoration_number=4):
     print('{0} {1} {0}'.format('#'*decoration_number, step_name))
+
 
 def get_assets_from_artstation(search=None, user=None):
     if not search and not user:
@@ -21,16 +23,16 @@ def get_assets_from_artstation(search=None, user=None):
 
     if user:
         mode = 'users/{}'.format(user.lower())
-        request_data = { 'page': 1 }
+        request_data = {'page': 1}
         print_step_name('Getting assets from {} profile'.format(user.upper()), 1)
     else:
         mode = 'search'
         request_data = {
-            'direction':'desc',
-            'order':'likes_count',
-            'page':1,
-            'q':search,
-            'show_pro_first':False
+            'direction': 'desc',
+            'order': 'likes_count',
+            'page': 1,
+            'q': search,
+            'show_pro_first': False
         }
         print_step_name('Getting assets from "{}" search response'.format(search), 1)
 
@@ -39,9 +41,11 @@ def get_assets_from_artstation(search=None, user=None):
     session = requests.Session()
     response_cookies = session.get(HOME_URL)
     artstation_cookies = session.cookies.get_dict()
+    print(artstation_cookies)
 
     print_step_name('Retrive assets', 1)
     r = requests.get(request_url, cookies=artstation_cookies, params=request_data)
+    print(r.content.decode())
     art_json = r.json()
     page = request_data['page']
     total_count = art_json.get('total_count')
@@ -88,6 +92,7 @@ def write_data_to_csv(assets=None, filename='untitled.csv'):
                 }
             artwriter.writerow(row)
     print_step_name('Assets was packed successfuly', 1)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
