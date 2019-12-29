@@ -6,3 +6,6 @@ LOCATION_COLUMN_NAME = 'location'
 PLOT_FORMAT = 'svg'
 PLOT_LABELS_FORMAT = "%d.%m.%Y"
 FILE_SAVE_FORMAT = "%Y%m%d-%H%M%S"
+
+JSON_RESPONSE_NAME = 'projects.json'
+HOME_URL = 'https://www.artstation.com'

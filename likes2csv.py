@@ -1,4 +1,3 @@
-# Import basic modules
 import argparse
 import csv
 import datetime as dt
@@ -7,13 +6,8 @@ import time
 
 import requests
 
-# Constants
-JSON_RESPONSE_NAME = 'projects.json'
-HOME_URL = 'https://www.artstation.com'
-
-
-def print_step_name(step_name='', decoration_number=4):
-    print('{0} {1} {0}'.format('#'*decoration_number, step_name))
+from core.func import print_step_name
+from core.settings import *
 
 
 def get_assets_from_artstation(search=None, user=None):
