@@ -2,10 +2,10 @@
 import argparse
 import csv
 import datetime as dt
-import json
 import random
-import requests
 import time
+
+import requests
 
 # Constants
 JSON_RESPONSE_NAME = 'projects.json'

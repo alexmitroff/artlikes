@@ -6,17 +6,18 @@ Usage:
 Returns two svg files with plots: likes and views
 """
 import argparse
-import matplotlib.cbook as cbook
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import os
-from settings import *
 import datetime as dt
+import os
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+from settings import *
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-def get_filename(file_path: str) -> str:
+def get_label(file_path: str) -> str:
     """
     './results/20191228-161623_artstation_username.csv' => ['.', 'results', '20191228-161623_artstation_username.csv']
     => '20191228-161623_artstation_username.csv' => ['20191228-161623_artstation_username', 'csv']
@@ -34,12 +35,17 @@ def save_boxplot(data_dict: dict, title: str = 'Likes'):
     values = []
     data = sorted(data_dict.items())
     for key, value in data:
-        keys.append(get_filename(key))
+        keys.append(get_label(key))
         values.append(value)
-    plt.figure()
-    plt.boxplot(x=values, labels=keys)
+
+    fig = plt.figure()
+    fig.suptitle(title)
+    ax = fig.add_subplot(111)
+    ax.boxplot(x=values, labels=keys)
+    ax.set_ylabel('%s count' % title.lower())
+
     save_path = '%s.%s.%s' % (filepath, title.lower(), PLOT_FORMAT)
-    plt.savefig(save_path, format=PLOT_FORMAT)
+    fig.savefig(save_path, format=PLOT_FORMAT)
     print('Plot saved to', save_path)
 
 
@@ -69,4 +75,3 @@ if __name__ == "__main__":
             likes_dict[file_str] = likes
             views_dict[file_str] = views
         save_boxplot(likes_dict, title='Likes')
-        # save_boxplot(views_dict, title='Views')
