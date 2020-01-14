@@ -12,7 +12,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from settings import *
+from core.settings import *
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
