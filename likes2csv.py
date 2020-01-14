@@ -1,7 +1,7 @@
 import argparse
 
 from core.artstationhandler import artstation_handler
-from core.func import create_file_name
+from core.func import create_file_name, get_or_create_dir
 from core.jsonconverter import json_converter
 from core.settings import RESULT_PATH
 
@@ -17,7 +17,8 @@ def process_data(user: str, search: str):
     csv_filename = f'{filename}.csv'
 
     artstation_handler.save_as_json(assets, f'{RESULT_PATH}/{json_filename}')
-    json_converter.save_as_csv(f'{RESULT_PATH}/{json_filename}', f'{RESULT_PATH}/{csv_filename}')
+    result_path = get_or_create_dir(RESULT_PATH)
+    json_converter.save_as_csv(f'{result_path}/{json_filename}', f'{result_path}/{csv_filename}')
 
 
 if __name__ == "__main__":
