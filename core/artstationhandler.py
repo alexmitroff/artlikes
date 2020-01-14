@@ -13,6 +13,10 @@ __all__ = (
 
 
 class ArtstationHandler:
+    _basic_params = {
+        'additional_fields': 'views_count',
+        'page': 1,
+    }
 
     def __new__(cls):
         """We do not need to have multiple instances of ArtstationHandler"""
@@ -30,24 +34,33 @@ class ArtstationHandler:
     def get_assets_count(assets: dict) -> int:
         return len(assets)
 
-    @staticmethod
-    def get_user_request_data(user: str) -> (str, dict):
-        return 'users/{}'.format(user.lower()), {'page': 1}
+    def get_user_request_data(self, user: str) -> (str, dict):
+        """Prepare request parameters for user mode
 
-    @staticmethod
-    def get_search_request_data(search: str) -> (str, dict):
+        :param user: str
+        :return: mode: str, request_data: dict
+        """
+        request_data = self._basic_params
+        return f'users/{user.lower()}', request_data
+
+    def get_search_request_data(self, search: str) -> (str, dict):
+        """Prepare request parameters for search mode
+
+        :param search: str
+        :return: mode: str, request_data: dict
+        """
         request_data = {
             'direction': 'desc',
             'order': 'likes_count',
-            'page': 1,
             'q': search,
             'show_pro_first': False
         }
+        request_data.update(self._basic_params)
         return 'search', request_data
 
     @staticmethod
     def get_request_url(mode: str) -> str:
-        return '{}/{}/{}'.format(HOME_URL, mode, JSON_RESPONSE_NAME)
+        return f'{HOME_URL}/{mode}/{JSON_RESPONSE_NAME}'
 
     def get_data(self, mode: str, request_data: dict) -> (dict, dict):
         r = requests.get(self.get_request_url(mode), cookies=self.artstation_cookies, params=request_data)
@@ -62,28 +75,32 @@ class ArtstationHandler:
 
         if user:
             mode, request_data = self.get_user_request_data(user)
-            print_step_name('Getting assets from {} profile'.format(user.upper()), 1)
+            print_step_name(f'Getting assets from {user.upper()} profile', 1)
         else:
             mode, request_data = self.get_search_request_data(search)
-            print_step_name('Getting assets from "{}" search response'.format(search), 1)
+            print_step_name(f'Getting assets from "{search}" search response', 1)
 
         print_step_name('Retrive data from artstation', 1)
         assets, total_count = self.get_data(mode, request_data)
 
-        i = self.get_assets_count(assets)
-        print_step_name('Page {}: {}/{}'.format(request_data['page'], i, total_count), 1)
-        while i < total_count:
+        assets_count = self.get_assets_count(assets)
+        print_step_name(f'Page {request_data["page"]}: {assets_count}/{total_count}', 1)
+
+        while total_count > assets_count:
             time.sleep(random.uniform(0.5, 5.0))
             request_data['page'] += 1
 
-            print_step_name('Page {}: {}/{}'.format(request_data['page'], i, total_count), 1)
-            next_assets, next_total_count = self.get_data(mode, request_data)
+            next_assets, total_count = self.get_data(mode, request_data)
             assets += next_assets
-            if i == len(assets):
-                print_step_name('Page {}: {}/{}'.format(request_data['page'], i, next_total_count), 1)
+
+            renewed_assets_count = self.get_assets_count(assets)
+            print_step_name(f'Page {request_data["page"]}: {assets_count}/{total_count}', 1)
+            if not assets_count == renewed_assets_count:
+                assets_count = renewed_assets_count
+            else:
                 break
-            i = self.get_assets_count(assets)
-        print_step_name('All {} available assets were retrieved'.format(i), 1)
+
+        print_step_name(f'All {assets_count} available assets were retrieved', 1)
         return assets
 
     @staticmethod
