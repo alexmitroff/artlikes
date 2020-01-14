@@ -1,7 +1,5 @@
 import os
 
-from .func import get_or_create_dir
-
 PUBLISHED_COLUMN_NAME = 'published_at'
 LIKES_COLUMN_NAME = 'likes_count'
 VIEWS_COLUMN_NAME = 'views_count'
@@ -15,4 +13,4 @@ JSON_RESPONSE_NAME = 'projects.json'
 HOME_URL = 'https://www.artstation.com'
 
 HOME_DIR = os.getenv('HOME')
-RESULT_PATH = get_or_create_dir(f'{HOME_DIR}/artlikes_result')
+RESULT_PATH = f'{HOME_DIR}/artlikes_result'
