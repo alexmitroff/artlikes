@@ -1,3 +1,12 @@
+"""Script to convert raw API responce to CSV data
+
+Usage:
+    python likes2csv.py -u aka_alarm
+    python likes2csv.py -s snake
+
+Returns file YYYYMMDDHHMM_artstation_<user or term>.csv
+"""
+
 import argparse
 
 from core.artstationhandler import artstation_handler

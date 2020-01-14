@@ -1,7 +1,7 @@
-"""Script to transfer data in CSV to box plots
+"""Script to transfer CSV data into box plots
 
 Usage:
-    python csv2plot path/to/file.csv path/to/file2.csv
+    python csv2plot.py path/to/file.csv path/to/file2.csv
 
 Returns two svg files with plots: likes and views
 """

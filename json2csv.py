@@ -1,3 +1,11 @@
+"""Script that converts JSON to CSV data
+
+Usage:
+    python json2csv.py -f path_to/file_name.json
+
+Returns file <file_name>.csv
+"""
+
 import argparse
 
 from core.func import get_or_create_dir
@@ -18,7 +26,7 @@ def process_data(json_path: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-j", "--json", help="path to json file", type=str)
+    parser.add_argument("-f", "--file", help="path to json file", type=str)
     args = parser.parse_args()
 
     process_data(args.json)
