@@ -1,5 +1,6 @@
 import argparse
 
+from core.func import get_or_create_dir
 from core.jsonconverter import json_converter
 from core.settings import RESULT_PATH
 
@@ -11,7 +12,8 @@ def process_data(json_path: str):
     filename = json_path.split('/')[-1].split('.')[0]
     csv_filename = f'{filename}.csv'
 
-    json_converter.save_as_csv(f'{json_path}', f'{RESULT_PATH}/{csv_filename}')
+    result_path = get_or_create_dir(RESULT_PATH)
+    json_converter.save_as_csv(f'{json_path}', f'{result_path}/{csv_filename}')
 
 
 if __name__ == "__main__":
